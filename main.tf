@@ -9,19 +9,11 @@ resource "null_resource" "check_terraform" {
   }
 }
 
-# Resource to check and install IIS if not installed
-resource "null_resource" "check_and_install_iis" {
+# Resource to check IIS installation
+resource "null_resource" "check_iis" {
   provisioner "local-exec" {
     command = <<EOT
-    powershell -Command "
-    if (-not (Get-WindowsFeature -Name Web-Server).Installed) {
-        Install-WindowsFeature -Name Web-Server -IncludeManagementTools;
-        Write-Output 'IIS was not installed and has now been installed';
-    } else {
-        Write-Output 'IIS is already installed';
-    }
-    "
+    powershell -Command "if (Get-WindowsFeature -Name Web-Server) { Install-WindowsFeature -Name Web-Server -IncludeManagementTools; } else { Write-Output 'IIS is already installed'; }"
     EOT
   }
 }
-
