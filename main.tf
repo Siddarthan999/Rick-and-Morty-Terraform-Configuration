@@ -9,7 +9,7 @@ resource "null_resource" "check_terraform" {
   }
 }
 
-# Resource to check IIS installation
+# Resource to check and install IIS if not installed
 resource "null_resource" "check_iis" {
   provisioner "local-exec" {
     command = <<EOT
